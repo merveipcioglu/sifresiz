@@ -90,7 +90,7 @@ DATABASES = {
         'NAME': 'nextTest',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '54.227.140.149',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
