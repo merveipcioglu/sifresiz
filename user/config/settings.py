@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -90,7 +89,7 @@ DATABASES = {
         'NAME': 'next',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
+        'HOST': '54.227.140.149',
         'PORT': '5432',
     }
 }
@@ -105,9 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 8,
-        }
     },
     {
         'NAME': 'users.validators.PasswordValidator',
@@ -152,7 +148,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'INFO',
+        'level': 'DEBUG',
     },
 }
 
@@ -186,15 +182,6 @@ REDOC_SETTINGS = {
     'LAZY_RENDERING': True,
 }
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
-
-AWS_S3_FILE_OVERWRITE = os.getenv('AWS_S3_FILE_OVERWRITE')
-AWS_DEFAULT_ACL = os.getenv('AWS_DEFAULT_ACL')
-AWS_QUERYSTRING_AUTH = os.getenv('AWS_QUERYSTRING_AUTH')
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -212,4 +199,9 @@ SIMPLE_JWT = {
 }
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AUTHENTICATION_BACKENDS = [
+    'users.auth.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 

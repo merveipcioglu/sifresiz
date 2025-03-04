@@ -286,7 +286,7 @@ update_interests_docs = {
     
     Endpoint: /user/interests/
     """,
-    'tags': ['user'],
+    'tags': ['interests'],
     'request_body': openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
@@ -367,7 +367,7 @@ update_pictures_docs = {
 list_interests_docs = {
     'operation_description': """
     List all available interests.
-    Endpoint: /interests/
+    Endpoint: /user/interests/list/
     """,
     'tags': ['interests'],
     'responses': {
@@ -385,5 +385,38 @@ list_interests_docs = {
         ),
         500: openapi.Response(description='Server error'),
     }
+}
+
+
+get_suggestions_docs = {
+    'operation_description': """
+    Get suggested users.
+    
+    
+    Endpoint: /user/suggestions/
+    """,
+    'tags': ['suggestions'],
+    'responses': {
+        200: openapi.Response(
+            description='Success',
+            examples={
+                'application/json': [
+                    {
+                        "username": "next",
+                        "first_name": "Next",
+                        "last_name": "User",
+                        "profile_picture": "profile/user_1.jpg",
+                        "count_post": 0,
+                        "count_followers": 0,
+                        "count_following": 0
+                    }
+                ]
+            }
+        ),
+        401: openapi.Response(description='Authentication required'),
+        403: openapi.Response(description='Invalid token'),
+        500: openapi.Response(description='Server error'),
+    },
+    "security": [{"Bearer": []}],
 }
 

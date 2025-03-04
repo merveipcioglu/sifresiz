@@ -24,23 +24,17 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="User Authentication API",
+        title="Next API",
         default_version='v1',
-        description="API for user registration and phone verification",
-        terms_of_service="https://www.example.com/terms/",
-        contact=openapi.Contact(email="contact@example.com"),
-        license=openapi.License(name="BSD License"),
+        description="Next API documentation",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
-    authentication_classes=(),
-    url='http://localhost:8000',
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('users.urls')),
-     path('interests/', include('users.urls_interests')),
     
     # Swagger URLs
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -9,10 +9,8 @@ class SignupStep1Serializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name', 'phone_number']
 
     def validate_phone_number(self, value):
-        if CustomUser.objects.filter(phone_number=value).exists():
-            raise serializers.ValidationError({
-                'phone_number': 'Phone number already exists'
-            })
+        if CustomUser.get_by_phone(value):
+            raise serializers.ValidationError('Phone number already exists')
         return value
 
 class SignupStep3Serializer(serializers.Serializer):
@@ -22,6 +20,9 @@ class SignupStep3Serializer(serializers.Serializer):
     password_confirm = serializers.CharField(write_only=True)
 
     def validate(self, data):
+     
+       
+
         if data['password'] != data['password_confirm']:
             raise serializers.ValidationError({
                 'password': 'Passwords do not match'
@@ -34,8 +35,7 @@ class SignupStep3Serializer(serializers.Serializer):
             raise serializers.ValidationError({
                 'username': str(e.message)
             })
-
-        if CustomUser.objects.filter(username=data['username']).exists():
+        if CustomUser.get_by_username(data['username']):
             raise serializers.ValidationError({
                 'username': 'Username already exists'
             })
@@ -58,14 +58,13 @@ class InterestSerializer(serializers.ModelSerializer):
 class UpdateUserInterestsSerializer(serializers.Serializer):
     interests = serializers.ListField(
         child=serializers.IntegerField(),
-        max_length=3  # Maximum 3 interests
+        max_length=3 
     )
 
     def validate_interests(self, value):
         if len(value) > 3:
             raise serializers.ValidationError('Maximum 3 interests allowed')
             
-        # Check if all interests exist
         existing_interests = Interest.objects.filter(id__in=value)
         if len(existing_interests) != len(value):
             raise serializers.ValidationError('One or more interests do not exist')
@@ -106,4 +105,10 @@ class UpdatePicturesSerializer(serializers.Serializer):
                 raise serializers.ValidationError(str(e))
 
         return data
+
+class SuggestedUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'first_name', 'last_name', 'profile_picture', 
+                 'count_post', 'count_followers', 'count_following']
 

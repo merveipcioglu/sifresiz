@@ -11,4 +11,6 @@ urlpatterns = [
     path('check/phone/', views.check_phone, name='check_phone'),
     path('interests/', views.update_user_interests, name='update_user_interests'),
     path('pictures/', views.update_pictures, name='update_pictures'),
+    path('suggestions/', views.get_suggested_users, name='get_suggested_users'),
+    path('interests/list/', views.list_interests, name='list_interests'),
 ]  

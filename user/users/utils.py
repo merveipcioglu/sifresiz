@@ -3,9 +3,8 @@ import logging
 import requests
 from django.conf import settings
 from urllib.parse import quote
-import boto3
 from boto3.session import Session
-
+from .encryption import AESCipher
 logger = logging.getLogger(__name__)
 
 def generate_verification_code():
@@ -63,8 +62,6 @@ def upload_file_to_s3(file_obj, file_path, content_type=None):
                 'ContentType': content_type
             }
         )
-        
-        # Doğrudan public URL döndür
         return f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{file_path}"
 
     except Exception as e:
@@ -110,7 +107,7 @@ def generate_username_suggestions(first_name, last_name):
     
 
     counter = 1
-    while len(suggestions) < 3:
+    while len(suggestions) < 4:
         suggestion = f"{base}{counter}"
         
         if len(suggestion) <= 30 and len(suggestion) >= 3 and not CustomUser.objects.filter(username=suggestion).exists():
@@ -120,5 +117,25 @@ def generate_username_suggestions(first_name, last_name):
         if counter > 999: 
             break
             
-    return suggestions[:3]
+    return suggestions[:4]
+
+
+def create_encrypted_response(message, data=None):
+    cipher = AESCipher()
+    
+    # Prepare the response structure
+    response = {
+        "message": message,
+        "data": None
+    }
+    
+    # If there is data, encrypt it
+    if data is not None:
+        # Convert data to JSON string
+        # data_json = json.dumps(data)
+        # Encrypt the JSON string
+        encrypted_data = cipher.encrypt(data)
+        response["data"] = encrypted_data
+    
+    return response
 

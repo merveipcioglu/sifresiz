@@ -5,8 +5,12 @@ from .auth import (
     check_username,
     check_phone
 )
-from .profile import update_user_interests, update_pictures
-from .interests import list_interests
+from .profile import (
+    update_user_interests,
+    update_pictures,
+    get_suggested_users,
+    list_interests
+)
 
 __all__ = [
     'signup',
@@ -16,5 +20,6 @@ __all__ = [
     'check_phone',
     'update_user_interests',
     'update_pictures',
+    'get_suggested_users',
     'list_interests'
 ] 
