@@ -16,10 +16,10 @@ class Interest(models.Model):
 
 class CustomUser(AbstractUser):
   
-    username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=30)
-    first_name = models.CharField(max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
+    username = models.CharField(max_length=255, unique=True)
+    password = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
     email = models.EmailField(blank=True)
     is_staff = models.BooleanField(default=False)  
     is_superuser = models.BooleanField(default=False)  
